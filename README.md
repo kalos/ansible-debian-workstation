@@ -33,6 +33,7 @@ It is designed to be a generic **buildfiles** (as opposed to **[dotfiles](https:
 5. **[Options](#options)**
     1. [Enable / Disable Management](#enable--disable-management)
     2. [Package options](#package-options)
+    2. [Encrypt config](#encrypt-config)
 6. **[Requirements](#requirements)**
     1. [Install system requirements](#install-system-requirements)
     2. [Sudo permissions](#sudo-permissions)
@@ -503,6 +504,52 @@ xorg_touchpad_driver: 'synaptics'
 ...
 ```
 
+#### Encrypt config
+
+##### Inizialize vault:
+```
+dd bs=512 count=4 iflag=fullblock if=/dev/random of=.vaultfile
+```
+(ensure you have vault_password_file option configured in ansible.cfg)
+
+
+##### Encrypt file:
+```
+ansible-vault encrypt .gitconfig --output .gitconfig_encrypt
+```
+
+Dotfiles module auto-decrypt all file "*_encrypt".
+
+You also use encrypted var for example in jinja2 template.
+Create encrypted var:
+```
+ansible-vault encrypt_string --vault-password-file .vaultfile 'mysecret' --name 'secret_var_name'
+```
+Insert output in file 'host_vars/kalos-jiji.yml':
+```
+secret_var_name: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          65346139663638613663653235386632346630626631353231623461623862393333383638383638
+          6235396634663766626637393066653137373663376162610a613764366538303631643837333239
+          62313662626134323437393662626461313831663838366662313030303032663537303465396364
+          6136643362663861370a646561346662656434303235336333316562616365666265656663346239
+          3730
+```
+
+
+##### Rekey all encrypted files:
+```
+export debian_workstation=/home/kalos/projects/devops/debian_workstation
+
+cd $HOME/.dotfiles 
+dd bs=512 count=4 iflag=fullblock if=/dev/random of=$debian_workstation/.vaultfile_new
+
+for dotfile_encrypted in $(git ls-files | grep _encrypted)
+do
+  ansible-vault rekey --vault-password-file $debian_workstation/.vaultfile --new-vault-password-file $debian_workstation/.vaultfile_new $dotfile_encrypted
+done
+mv $debian_workstation/.vaultfile_new $debian_workstation/.vaultfile
+```
 
 ## Requirements
 
