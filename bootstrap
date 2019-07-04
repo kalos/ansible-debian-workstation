@@ -4,7 +4,7 @@ set -eu
 
 # Default profile to use
 # Overwrite via command line argument
-PROFILE="${1:-cytopia-t470p}"
+PROFILE="${1:-kalos-jiji}"
 
 if ! command -v sudo >/dev/null 2>&1; then
 	>&2 echo "This script requires 'sudo' binary to be installed"
@@ -29,8 +29,8 @@ sudo apt-get install --no-install-recommends --no-install-suggests -y \
 ###
 ### Download GitHub repository
 ###
-git clone https://github.com/cytopia/ansible-debian
-cd ansible-debian
+git clone https://github.com/kalos/ansible-debian-workstation
+cd ansible-debian-workstation
 
 
 ###

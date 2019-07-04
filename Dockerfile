@@ -20,19 +20,19 @@ RUN set -eux \
 
 # Add user with password-less sudo
 RUN set -eux \
-	&& useradd -m -s /bin/bash cytopia \
-	&& echo "cytopia ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/cytopia
+	&& useradd -m -s /bin/bash kalos \
+	&& echo "kalos ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/kalos
 
 # Copy files
-COPY ./ /home/cytopia/ansible
+COPY ./ /home/kalos/ansible
 RUN set -eux \
-	&& chown -R cytopia:cytopia /home/cytopia/ansible
+	&& chown -R kalos:kalos /home/kalos/ansible
 
 # Switch to user
-USER cytopia
+USER kalos
 
 # Change working directory
-WORKDIR /home/cytopia/ansible
+WORKDIR /home/kalos/ansible
 
 # Systemd cannot be checked inside Docker, so replace it with a dummy role
 RUN set -eux \
