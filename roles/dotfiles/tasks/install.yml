@@ -23,6 +23,7 @@
     chdir: "{{ dotfiles_dest }}"
     warn: no
   register: encrypted_files
+  changed_when: false
   ignore_errors: yes
 
 - name: decrypt file and install
@@ -38,6 +39,7 @@
     chdir: "{{ dotfiles_dest }}"
     warn: no
   register: template_files
+  changed_when: false
   ignore_errors: yes
 
 - name: compile template file and install
