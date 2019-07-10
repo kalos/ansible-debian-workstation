@@ -53,6 +53,7 @@ help:
 #--------------------------------------------------------------------------------------------------
 
 build-docker:
+	(docker images | grep ${IMAG} 2>/dev/null) || \
 	docker build -t $(IMAGE) -f $(DIR)/$(FILE) $(DIR)
 
 # Automated tests
