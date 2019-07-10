@@ -31,3 +31,18 @@
     dest: "{{ lookup('env','HOME') }}/{{ item.replace('_encrypted','') }}"
   loop: "{{ encrypted_files.stdout_lines }}"
   when: encrypted_files.stdout_lines |length > 0
+
+- name: register template files (via jinja2)
+  shell: git ls-files -- '*.j2'
+  args:
+    chdir: "{{ dotfiles_dest }}"
+    warn: no
+  register: template_files
+  ignore_errors: yes
+
+- name: compile template file and install
+  template:
+    src: "{{ lookup('env','HOME') }}/{{ item }}"
+    dest: "{{ lookup('env','HOME') }}/{{ item.replace('.j2','') }}"
+  loop: "{{ template_files.stdout_lines }}"
+  when: template_files.stdout_lines |length > 0
