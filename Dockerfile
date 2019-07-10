@@ -1,5 +1,5 @@
 # vim:set ft=dockerfile:
-FROM debian:buster
+FROM debian:testing
 LABEL maintainer="cytopia <cytopia@everythingcli.org>, kalos <kalos@nerdrug.org>"
 
 RUN set -eux \

@@ -19,6 +19,25 @@
   become: True
   notify: update apt repository cache
 
+- name: APT pinning for debian testing
+  copy:
+    dest: /etc/apt/preferences.d/testing
+    content: |
+      Package: *
+      Pin: release o=Debian,a=testing
+      Pin-Priority: 900
+      Package: *
+      Pin: release o=Debian,a=unstable
+      Pin-Priority: 300
+      Package: *
+      Pin: release o=Debian,a=experimental
+      Pin-Priority: 290
+      Package: *
+      Pin: release o=Debian
+      Pin-Priority: -1
+  become: True
+  when: debian_suite == 'testing'
+
 - name: ensure apt keys are managed
   apt_key:
     state: "{{ apt_repo_state }}"

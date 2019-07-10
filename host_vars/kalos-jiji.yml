@@ -1,10 +1,9 @@
 ---
 
 ###
-### custom variables
+### Custom variables
 ###
-debian_dist: buster
-
+debian_suite: testing
 
 
 ###
@@ -12,25 +11,25 @@ debian_dist: buster
 ###
 apt_repo_repositories:
   # main
-  - file: debian-{{ debian_dist }}
-    repo: "deb http://deb.debian.org/debian {{ debian_dist }} main contrib non-free"
-  - file: debian-{{ debian_dist }}
-    repo: "deb-src http://deb.debian.org/debian {{ debian_dist }} main contrib non-free"
+  - file: debian-{{ debian_suite }}
+    repo: "deb http://deb.debian.org/debian {{ debian_suite }} main contrib non-free"
+  - file: debian-{{ debian_suite }}
+    repo: "deb-src http://deb.debian.org/debian {{ debian_suite }} main contrib non-free"
+  # security on testing
+  - file: debian-{{ debian_suite }}
+    repo: "deb http://deb.debian.org/debian-security {{ debian_suite }}-security main contrib non-free"
+  - file: debian-{{ debian_suite }}
+    repo: "deb-src http://deb.debian.org/debian-security {{ debian_suite }}-security main contrib non-free"
+  # security on stable
+  #- file: debian-{{ debian_suite }}
+  #  repo: "deb http://deb.debian.org/debian {{ debian_suite }}-updates main contrib non-free"
+  #- file: debian-{{ debian_suite }}
+  #  repo: "deb-src http://deb.debian.org/debian {{ debian_suite }}-updates main contrib non-free"
   # unstable
   - file: debian-unstable
     repo: "deb http://deb.debian.org/debian unstable main contrib non-free"
   - file: debian-unstable
     repo: "deb-src http://deb.debian.org/debian unstable main contrib non-free"
-  # updates
-  - file: debian-updates
-    repo: "deb http://deb.debian.org/debian {{ debian_dist }}-updates main contrib non-free"
-  - file: debian-updates
-    repo: "deb-src http://deb.debian.org/debian {{ debian_dist }}-updates main contrib non-free"
-  # security
-  - file: debian-security
-    repo: "deb http://security.debian.org {{ debian_dist }}/updates main contrib non-free"
-  - file: debian-security
-    repo: "deb-src http://security.debian.org {{ debian_dist }}/updates main contrib non-free"
 
 
 ###
@@ -246,7 +245,7 @@ chromium_extensions: []
 
 # ---- Docker ----
 # 'wheezy', 'jessie', 'stretch' or 'buster'
-docker_repo_dist: "{{ debian_dist }}"
+docker_repo_dist: "{{ debian_suite }}"
 # 'stable' or 'edge'
 docker_repo_channel: stable
 
