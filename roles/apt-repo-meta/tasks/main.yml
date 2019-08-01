@@ -38,6 +38,14 @@
   become: True
   when: debian_suite == 'testing'
 
+- name: set default release
+  copy:
+    dest: /etc/apt/apt.conf.d/00default-release
+    content: |
+      APT::Default-Release "testing";
+  become: True
+  when: debian_suite == 'testing'
+
 - name: ensure apt keys are managed
   apt_key:
     state: "{{ apt_repo_state }}"
